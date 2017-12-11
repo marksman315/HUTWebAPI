@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HomeUseTrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CalorieCount">
+          <Key>
+            <PropertyRef Name="CalorieCountId" />
+          </Key>
+          <Property Name="CalorieCountId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DatetimeEntered" Type="datetime" Nullable="false" />
+          <Property Name="Calories" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firstname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lastname" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="SizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DateEntered" Type="date" Nullable="false" />
+          <Property Name="Bicep" Type="decimal" Precision="5" Scale="3" />
+          <Property Name="Stomach" Type="decimal" Precision="5" Scale="3" />
+        </EntityType>
+        <EntityType Name="Weight">
+          <Key>
+            <PropertyRef Name="WeightId" />
+          </Key>
+          <Property Name="WeightId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DateEntered" Type="date" Nullable="false" />
+          <Property Name="WeightAmount" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CalorieCounts_To_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="CalorieCount" Type="Self.CalorieCount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="CalorieCount">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Size_To_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Size" Type="Self.Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Size">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Weight_to_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HomeUseTrackingModelStoreContainer">
+          <EntitySet Name="CalorieCount" EntityType="Self.CalorieCount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Size" EntityType="Self.Size" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CalorieCounts_To_Person" Association="Self.FK_CalorieCounts_To_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="CalorieCount" EntitySet="CalorieCount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Size_To_Person" Association="Self.FK_Size_To_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Size" EntitySet="Size" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Weight_to_Person" Association="Self.FK_Weight_to_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HomeUseTrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Sizes" Relationship="Self.FK_Size_To_Person" FromRole="Person" ToRole="Size" />
+          <NavigationProperty Name="CalorieCounts" Relationship="HomeUseTrackingModel.FK_CalorieCounts_To_Person" FromRole="Person" ToRole="CalorieCount" />
+          <NavigationProperty Name="Weights" Relationship="HomeUseTrackingModel.FK_Weight_to_Person" FromRole="Person" ToRole="Weight" />
+        </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="SizeId" />
+          </Key>
+          <Property Name="SizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Bicep" Type="Decimal" Precision="5" Scale="3" />
+          <Property Name="Stomach" Type="Decimal" Precision="5" Scale="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Size_To_Person" FromRole="Size" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_Size_To_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Size" Type="Self.Size" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Size">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HomeUseTrackingEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Sizes" EntityType="Self.Size" />
+          <AssociationSet Name="FK_Size_To_Person" Association="Self.FK_Size_To_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Size" EntitySet="Sizes" />
+          </AssociationSet>
+          <EntitySet Name="CalorieCounts" EntityType="HomeUseTrackingModel.CalorieCount" />
+          <EntitySet Name="Weights" EntityType="HomeUseTrackingModel.Weight" />
+          <AssociationSet Name="FK_CalorieCounts_To_Person" Association="HomeUseTrackingModel.FK_CalorieCounts_To_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="CalorieCount" EntitySet="CalorieCounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Weight_to_Person" Association="HomeUseTrackingModel.FK_Weight_to_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Weight" EntitySet="Weights" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CalorieCount">
+          <Key>
+            <PropertyRef Name="CalorieCountId" />
+          </Key>
+          <Property Name="CalorieCountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DatetimeEntered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Calories" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="HomeUseTrackingModel.FK_CalorieCounts_To_Person" FromRole="CalorieCount" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Weight">
+          <Key>
+            <PropertyRef Name="WeightId" />
+          </Key>
+          <Property Name="WeightId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="WeightAmount" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <NavigationProperty Name="Person" Relationship="HomeUseTrackingModel.FK_Weight_to_Person" FromRole="Weight" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_CalorieCounts_To_Person">
+          <End Type="HomeUseTrackingModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="HomeUseTrackingModel.CalorieCount" Role="CalorieCount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="CalorieCount">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Weight_to_Person">
+          <End Type="HomeUseTrackingModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="HomeUseTrackingModel.Weight" Role="Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HomeUseTrackingModelStoreContainer" CdmEntityContainer="HomeUseTrackingEntities">
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sizes">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Size">
+              <MappingFragment StoreEntitySet="Size">
+                <ScalarProperty Name="SizeId" ColumnName="SizeId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="Bicep" ColumnName="Bicep" />
+                <ScalarProperty Name="Stomach" ColumnName="Stomach" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalorieCounts">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.CalorieCount">
+              <MappingFragment StoreEntitySet="CalorieCount">
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="DatetimeEntered" ColumnName="DatetimeEntered" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="CalorieCountId" ColumnName="CalorieCountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Weights">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Weight">
+              <MappingFragment StoreEntitySet="Weight">
+                <ScalarProperty Name="WeightAmount" ColumnName="WeightAmount" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="WeightId" ColumnName="WeightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

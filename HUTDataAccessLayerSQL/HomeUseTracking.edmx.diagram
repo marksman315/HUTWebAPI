@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a988c659ed5742b1abbb6a542315ecb4" Name="Diagram1">
+        <EntityTypeShape EntityType="HomeUseTrackingModel.Person" Width="1.5" PointX="5.625" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HomeUseTrackingModel.Size" Width="1.5" PointX="9.125" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="HomeUseTrackingModel.FK_Size_To_Person" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HomeUseTrackingModel.CalorieCount" Width="1.5" PointX="1.5" PointY="3.375" />
+        <EntityTypeShape EntityType="HomeUseTrackingModel.Weight" Width="1.5" PointX="2.875" PointY="0.5" />
+        <AssociationConnector Association="HomeUseTrackingModel.FK_CalorieCounts_To_Person" />
+        <AssociationConnector Association="HomeUseTrackingModel.FK_Weight_to_Person" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

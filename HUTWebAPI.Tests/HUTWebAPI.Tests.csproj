@@ -109,7 +109,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HUTModels\HUTModels.csproj">
+    <ProjectReference Include="..\HUTModels\HUTModels.csproj">
       <Project>{023ccdf8-8485-47a2-88ac-b158bc677fc0}</Project>
       <Name>HUTModels</Name>
     </ProjectReference>

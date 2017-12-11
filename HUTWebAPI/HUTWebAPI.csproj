@@ -261,6 +261,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
@@ -280,11 +281,11 @@
     <Content Include="Scripts\jquery-3.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HUTBusinessLayer\HUTBusinessLayer.API.csproj">
+    <ProjectReference Include="..\HUTBusinessLayer\HUTBusinessLayer.API.csproj">
       <Project>{eedf8443-7e15-434c-b39a-c7205f6bf075}</Project>
       <Name>HUTBusinessLayer.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HUTModels\HUTModels.csproj">
+    <ProjectReference Include="..\HUTModels\HUTModels.csproj">
       <Project>{023ccdf8-8485-47a2-88ac-b158bc677fc0}</Project>
       <Name>HUTModels</Name>
     </ProjectReference>
