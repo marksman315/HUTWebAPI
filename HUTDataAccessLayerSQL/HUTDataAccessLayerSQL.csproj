@@ -106,7 +106,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\HUTModels\HUTModels.csproj">
       <Project>{023ccdf8-8485-47a2-88ac-b158bc677fc0}</Project>

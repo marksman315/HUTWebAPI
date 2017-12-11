@@ -114,7 +114,7 @@
       <Name>HUTModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\HUTWebAPI\HUTWebAPI.csproj">
-      <Project>{52E489BE-FF11-4A33-9F58-39840B9C19BE}</Project>
+      <Project>{52e489be-ff11-4a33-9f58-39840b9c19be}</Project>
       <Name>HUTWebAPI</Name>
     </ProjectReference>
   </ItemGroup>
