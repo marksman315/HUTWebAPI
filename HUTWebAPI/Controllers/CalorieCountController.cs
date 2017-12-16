@@ -10,19 +10,23 @@ namespace HUTWebAPI.Controllers
 {
     public class CalorieCountController : ApiController
     {
-        // GET: api/CalorieCount
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public IHttpActionResult GetByDateRange(int personId, DateTime startDate, DateTime endDate)
         {
-            return new string[] { "value1", "value2" };
+            CalorieCountBLL bll = new CalorieCountBLL();
+            var calories = bll.GetByDateRange(personId, startDate, endDate);
+
+            if (calories == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Calorie counts do not exist.");
+            }
+            else
+            {
+                return Ok(calories);
+            }
         }
 
-        // GET: api/CalorieCount/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/CalorieCount
+        [HttpPost]        
         public HttpResponseMessage Post(HUTModels.CalorieCount model)
         {
             CalorieCountBLL bll = new CalorieCountBLL();

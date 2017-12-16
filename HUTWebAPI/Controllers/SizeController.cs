@@ -10,19 +10,7 @@ using HUTBusinessLayer.API;
 namespace HUTWebAPI.Controllers
 {
     public class SizeController : ApiController
-    {
-        // GET: api/Size
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Size/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+    {        
         [HttpGet]
         public IHttpActionResult GetByDateRange(int personId, DateTime startDate, DateTime endDate)
         {

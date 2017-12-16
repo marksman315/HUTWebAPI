@@ -55,7 +55,7 @@ namespace HUTBusinessLayer.API
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

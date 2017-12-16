@@ -10,19 +10,23 @@ namespace HUTWebAPI.Controllers
 {
     public class WeightController : ApiController
     {
-        // GET: api/Weight
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public IHttpActionResult GetByDateRange(int personId, DateTime startDate, DateTime endDate)
         {
-            return new string[] { "value1", "value2" };
+            WeightBLL bll = new WeightBLL();
+            var weights = bll.GetByDateRange(personId, startDate, endDate);
+
+            if (weights == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Weights do not exist.");
+            }
+            else
+            {
+                return Ok(weights);
+            }
         }
 
-        // GET: api/Weight/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Weight
+        [HttpPost]
         public HttpResponseMessage Post(HUTModels.Weight model)
         {
             WeightBLL bll = new WeightBLL();
