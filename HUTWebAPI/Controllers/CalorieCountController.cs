@@ -26,17 +26,26 @@ namespace HUTWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Insert calorie counts and return the total for the current day
+        /// </summary>
+        /// <param name="model">Calorie Count Model</param>
+        /// <returns></returns>
         [HttpPost]        
-        public HttpResponseMessage Post(HUTModels.CalorieCount model)
+        public IHttpActionResult Post(HUTModels.CalorieCount model)
         {
             CalorieCountBLL bll = new CalorieCountBLL();
             if (bll.Insert(model))
             {
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                DateTime startDateTime = model.DatetimeEntered.Date;
+                DateTime endDateTime = model.DatetimeEntered.Date.AddDays(1);
+                var calories = bll.GetByDateRange(model.PersonId, startDateTime, endDateTime);
+
+                return Ok(calories);
             }
             else
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return Content(HttpStatusCode.InternalServerError, "Problem inserting or returning calorie counts for the current day.");
             }
         }
 
