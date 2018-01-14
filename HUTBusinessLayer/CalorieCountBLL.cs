@@ -44,6 +44,26 @@ namespace HUTBusinessLayer.API
             return counts;
         }
 
+        public List<HUTModels.CalorieCount> GetTotalsPerDayInDateRange(int personId, DateTime startDate, DateTime endDate)
+        {
+            List<HUTModels.CalorieCount> counts = GetByDateRange(personId, startDate, endDate);
+
+            // group by the date, without the time, and sum up the calories
+            List<HUTModels.CalorieCount> countsPerDay = counts.GroupBy(g => new {
+                                                                            g.DatetimeEntered.Date,
+                                                                            g.PersonId
+                                                                        })
+                                                                        .Select(group => new HUTModels.CalorieCount()
+                                                                        {
+                                                                            CalorieCountId = 0,
+                                                                            PersonId = group.Key.PersonId,
+                                                                            DatetimeEntered = group.Key.Date,
+                                                                            Calories = group.Sum(c => c.Calories)
+                                                                        }).ToList();
+
+            return countsPerDay;
+        }
+
         public bool Insert(HUTModels.CalorieCount model)
         {
             try

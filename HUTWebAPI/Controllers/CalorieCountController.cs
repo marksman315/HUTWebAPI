@@ -26,6 +26,23 @@ namespace HUTWebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/CalorieCount/GetTotalsPerDayInDateRange", Name = "GetTotalsPerDayInDateRange")]
+        public IHttpActionResult GetTotalsPerDayInDateRange(int personId, DateTime startDate, DateTime endDate)
+        {
+            CalorieCountBLL bll = new CalorieCountBLL();
+            var calories = bll.GetTotalsPerDayInDateRange(personId, startDate, endDate);
+
+            if (calories == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Calorie counts per day do not exist.");
+            }
+            else
+            {
+                return Ok(calories);
+            }
+        }
+
         /// <summary>
         /// Insert calorie counts and return the total for the current day
         /// </summary>
