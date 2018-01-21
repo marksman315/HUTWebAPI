@@ -27,7 +27,7 @@ namespace HUTBusinessLayer.API
 
         public List<HUTModels.Weight> GetByDateRange(int personId, DateTime startDate, DateTime endDate)
         {
-            List<HUTModels.Weight> sizes = repo.Get<Weight>(w => w.PersonId == personId
+            List<HUTModels.Weight> weight = repo.Get<Weight>(w => w.PersonId == personId
                                                                 && w.DateEntered >= startDate.Date
                                                                 && w.DateEntered <= endDate.Date,
                                                                 orderBy: o => o.OrderBy(w => w.DateEntered)
@@ -41,7 +41,7 @@ namespace HUTBusinessLayer.API
                                                                                             })
                                                             .ToList();
 
-            return sizes;
+            return weight;
         }
 
         public bool Insert(HUTModels.Weight model)

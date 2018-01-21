@@ -14,7 +14,7 @@ namespace HUTWebAPI.Controllers
         public IHttpActionResult GetByDateRange(int personId, DateTime startDate, DateTime endDate)
         {
             CalorieCountBLL bll = new CalorieCountBLL();
-            var calories = bll.GetByDateRange(personId, startDate, endDate);
+            var calories = bll.GetByDateRange(personId, startDate.Date, endDate.Date.AddDays(1));
 
             if (calories == null)
             {
@@ -31,7 +31,7 @@ namespace HUTWebAPI.Controllers
         public IHttpActionResult GetTotalsPerDayInDateRange(int personId, DateTime startDate, DateTime endDate)
         {
             CalorieCountBLL bll = new CalorieCountBLL();
-            var calories = bll.GetTotalsPerDayInDateRange(personId, startDate, endDate);
+            var calories = bll.GetTotalsPerDayInDateRange(personId, startDate.Date, endDate.Date.AddDays(1));
 
             if (calories == null)
             {
