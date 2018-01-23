@@ -12,6 +12,8 @@
         <EntityTypeShape EntityType="HomeUseTrackingModel.Weight" Width="1.5" PointX="2.875" PointY="0.5" />
         <AssociationConnector Association="HomeUseTrackingModel.FK_CalorieCounts_To_Person" />
         <AssociationConnector Association="HomeUseTrackingModel.FK_Weight_to_Person" />
+        <EntityTypeShape EntityType="HomeUseTrackingModel.CalorieCountOffDay" Width="1.5" PointX="7.875" PointY="4.875" />
+        <AssociationConnector Association="HomeUseTrackingModel.FK_CalorieCountOffDay_To_Person" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

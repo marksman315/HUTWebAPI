@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HUTDataAccessLayerSQL;
 
 namespace HUTBusinessLayer.API
@@ -61,6 +59,8 @@ namespace HUTBusinessLayer.API
                                                                             Calories = group.Sum(c => c.Calories)
                                                                         }).ToList();
 
+            countsPerDay = AdjustForOffDays(personId, startDate, endDate, countsPerDay);
+
             return countsPerDay;
         }
 
@@ -79,6 +79,86 @@ namespace HUTBusinessLayer.API
             {
                 return false;
             }
+        }
+
+        private List<HUTModels.CalorieCount> AdjustForOffDays(int personId, DateTime startDate, DateTime endDate, List<HUTModels.CalorieCount> countsPerDay)
+        {
+            List<HUTModels.CalorieCountOffDay> offDays = GetCalorieCountOffDays(personId, startDate, endDate);
+
+            if (offDays?.Count > 0)
+            {
+                foreach (var offDay in offDays)
+                {
+                    foreach (var count in countsPerDay.Where(c => c.DatetimeEntered.Date == offDay.DateEntered))
+                    {
+                        // 2000 is an arbitrary number that will show on the chart and help identify which bars need to display with a different color
+                        count.Calories = 2000;
+                    }
+                }
+
+                List<HUTModels.CalorieCount> newCountsPerDay = new List<HUTModels.CalorieCount>();
+
+                for (int i = 0; i < countsPerDay.Count; i++)
+                {
+                    newCountsPerDay.Add(countsPerDay[i]);
+
+                    foreach (var offDay in offDays)
+                    {
+                        if (i == 0)
+                        {
+                            if (offDay.DateEntered < countsPerDay[i].DatetimeEntered.Date)
+                            {
+                                newCountsPerDay.Insert(0, new HUTModels.CalorieCount()
+                                                                        {
+                                                                            CalorieCountId = 0,
+                                                                            Calories = 2000,
+                                                                            DatetimeEntered = offDay.DateEntered,
+                                                                            PersonId = personId
+                                                                        });
+                            }
+                        }
+                        else if (i == countsPerDay.Count - 1)
+                        {
+                            if (offDay.DateEntered > countsPerDay[i].DatetimeEntered.Date)
+                            {
+                                newCountsPerDay.Add(new HUTModels.CalorieCount()
+                                                                        {
+                                                                            CalorieCountId = 0,
+                                                                            Calories = 2000,
+                                                                            DatetimeEntered = offDay.DateEntered,
+                                                                            PersonId = personId
+                                                                        });
+                            }
+                        }
+                        else
+                        {
+                            if (offDay.DateEntered > countsPerDay[i].DatetimeEntered.Date && offDay.DateEntered < countsPerDay[i + 1].DatetimeEntered.Date)
+                            {
+                                newCountsPerDay.Add(new HUTModels.CalorieCount()
+                                                                        {
+                                                                            CalorieCountId = 0,
+                                                                            Calories = 2000,
+                                                                            DatetimeEntered = offDay.DateEntered,
+                                                                            PersonId = personId
+                                                                        });
+                            }
+                        }
+                    }                    
+                }
+
+                return newCountsPerDay;
+            }
+
+            return countsPerDay;
+        }
+
+        private List<HUTModels.CalorieCountOffDay> GetCalorieCountOffDays(int personId, DateTime startDate, DateTime endDate)
+        {
+            CalorieCountOffDayBLL bll = new CalorieCountOffDayBLL(this.repo);
+
+            List<HUTModels.CalorieCountOffDay> offDays = bll.GetDaysOffInDateRange(personId, startDate, endDate);
+
+            return offDays;
         }
     }
 }

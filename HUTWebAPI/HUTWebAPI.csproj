@@ -199,6 +199,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CalorieCountController.cs" />
+    <Compile Include="Controllers\CalorieCountOffDayController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\WeightController.cs" />

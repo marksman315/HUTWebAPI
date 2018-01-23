@@ -14,6 +14,14 @@
           <Property Name="DatetimeEntered" Type="datetime" Nullable="false" />
           <Property Name="Calories" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CalorieCountOffDay">
+          <Key>
+            <PropertyRef Name="CalorieCountOffDayId" />
+          </Key>
+          <Property Name="CalorieCountOffDayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DateEntered" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="PersonId" />
@@ -41,7 +49,7 @@
           <Property Name="DateEntered" Type="date" Nullable="false" />
           <Property Name="WeightAmount" Type="decimal" Precision="4" Scale="1" Nullable="false" />
         </EntityType>
-        <Association Name="FK_CalorieCounts_To_Person">
+        <Association Name="FK_CalorieCount_To_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="CalorieCount" Type="Self.CalorieCount" Multiplicity="*" />
           <ReferentialConstraint>
@@ -49,6 +57,18 @@
               <PropertyRef Name="PersonId" />
             </Principal>
             <Dependent Role="CalorieCount">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CalorieCountOffDay_To_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="CalorieCountOffDay" Type="Self.CalorieCountOffDay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="CalorieCountOffDay">
               <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
@@ -79,12 +99,17 @@
         </Association>
         <EntityContainer Name="HomeUseTrackingModelStoreContainer">
           <EntitySet Name="CalorieCount" EntityType="Self.CalorieCount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CalorieCountOffDay" EntityType="Self.CalorieCountOffDay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Size" EntityType="Self.Size" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_CalorieCounts_To_Person" Association="Self.FK_CalorieCounts_To_Person">
+          <AssociationSet Name="FK_CalorieCount_To_Person" Association="Self.FK_CalorieCount_To_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="CalorieCount" EntitySet="CalorieCount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CalorieCountOffDay_To_Person" Association="Self.FK_CalorieCountOffDay_To_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="CalorieCountOffDay" EntitySet="CalorieCountOffDay" />
           </AssociationSet>
           <AssociationSet Name="FK_Size_To_Person" Association="Self.FK_Size_To_Person">
             <End Role="Person" EntitySet="Person" />
@@ -109,6 +134,7 @@
           <NavigationProperty Name="Sizes" Relationship="Self.FK_Size_To_Person" FromRole="Person" ToRole="Size" />
           <NavigationProperty Name="CalorieCounts" Relationship="HomeUseTrackingModel.FK_CalorieCounts_To_Person" FromRole="Person" ToRole="CalorieCount" />
           <NavigationProperty Name="Weights" Relationship="HomeUseTrackingModel.FK_Weight_to_Person" FromRole="Person" ToRole="Weight" />
+          <NavigationProperty Name="CalorieCountOffDays" Relationship="HomeUseTrackingModel.FK_CalorieCountOffDay_To_Person" FromRole="Person" ToRole="CalorieCountOffDay" />
         </EntityType>
         <EntityType Name="Size">
           <Key>
@@ -149,6 +175,11 @@
           <AssociationSet Name="FK_Weight_to_Person" Association="HomeUseTrackingModel.FK_Weight_to_Person">
             <End Role="Person" EntitySet="People" />
             <End Role="Weight" EntitySet="Weights" />
+          </AssociationSet>
+          <EntitySet Name="CalorieCountOffDays" EntityType="HomeUseTrackingModel.CalorieCountOffDay" />
+          <AssociationSet Name="FK_CalorieCountOffDay_To_Person" Association="HomeUseTrackingModel.FK_CalorieCountOffDay_To_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="CalorieCountOffDay" EntitySet="CalorieCountOffDays" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="CalorieCount">
@@ -191,6 +222,27 @@
               <PropertyRef Name="PersonId" />
             </Principal>
             <Dependent Role="Weight">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CalorieCountOffDay">
+          <Key>
+            <PropertyRef Name="CalorieCountOffDayId" />
+          </Key>
+          <Property Name="CalorieCountOffDayId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Person" Relationship="HomeUseTrackingModel.FK_CalorieCountOffDay_To_Person" FromRole="CalorieCountOffDay" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_CalorieCountOffDay_To_Person">
+          <End Type="HomeUseTrackingModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="HomeUseTrackingModel.CalorieCountOffDay" Role="CalorieCountOffDay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="CalorieCountOffDay">
               <PropertyRef Name="PersonId" />
             </Dependent>
           </ReferentialConstraint>
@@ -238,6 +290,15 @@
                 <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="WeightId" ColumnName="WeightId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalorieCountOffDays">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.CalorieCountOffDay">
+              <MappingFragment StoreEntitySet="CalorieCountOffDay">
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="CalorieCountOffDayId" ColumnName="CalorieCountOffDayId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -20,6 +20,7 @@ namespace HUTDataAccessLayerSQL
             this.Sizes = new HashSet<Size>();
             this.CalorieCounts = new HashSet<CalorieCount>();
             this.Weights = new HashSet<Weight>();
+            this.CalorieCountOffDays = new HashSet<CalorieCountOffDay>();
         }
     
         public int PersonId { get; set; }
@@ -32,5 +33,7 @@ namespace HUTDataAccessLayerSQL
         public virtual ICollection<CalorieCount> CalorieCounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Weight> Weights { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CalorieCountOffDay> CalorieCountOffDays { get; set; }
     }
 }
