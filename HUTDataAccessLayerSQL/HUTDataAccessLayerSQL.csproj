@@ -55,6 +55,9 @@
     <Compile Include="CalorieCountOffDay.cs">
       <DependentUpon>HomeUseTracking.tt</DependentUpon>
     </Compile>
+    <Compile Include="Food.cs">
+      <DependentUpon>HomeUseTracking.tt</DependentUpon>
+    </Compile>
     <Compile Include="HomeUseTracking.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,12 +73,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HomeUseTracking.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Ingredient.cs">
+      <DependentUpon>HomeUseTracking.tt</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IReadOnlyRepository.cs" />
     <Compile Include="Interfaces\IInsertUpdateDeleteRepository.cs" />
     <Compile Include="Person.cs">
       <DependentUpon>HomeUseTracking.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recipe.cs">
+      <DependentUpon>HomeUseTracking.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\InsertUpdateDeleteRepository.cs" />
     <Compile Include="Repositories\ReadOnlyRepository.cs" />
     <Compile Include="Size.cs">

@@ -49,8 +49,11 @@
   <ItemGroup>
     <Compile Include="CalorieCountBLL.cs" />
     <Compile Include="CalorieCountOffDayBLL.cs" />
+    <Compile Include="FoodBLL.cs" />
+    <Compile Include="IngredientBLL.cs" />
     <Compile Include="PersonBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecipeBLL.cs" />
     <Compile Include="SizeBLL.cs" />
     <Compile Include="WeightBLL.cs" />
   </ItemGroup>

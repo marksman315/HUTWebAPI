@@ -31,5 +31,8 @@ namespace HUTDataAccessLayerSQL
         public virtual DbSet<CalorieCount> CalorieCounts { get; set; }
         public virtual DbSet<Weight> Weights { get; set; }
         public virtual DbSet<CalorieCountOffDay> CalorieCountOffDays { get; set; }
+        public virtual DbSet<Food> Foods { get; set; }
+        public virtual DbSet<Ingredient> Ingredients { get; set; }
+        public virtual DbSet<Recipe> Recipes { get; set; }
     }
 }

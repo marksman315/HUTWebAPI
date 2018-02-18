@@ -22,6 +22,23 @@
           <Property Name="PersonId" Type="int" Nullable="false" />
           <Property Name="DateEntered" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="FoodId" />
+          </Key>
+          <Property Name="FoodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CaloriesPer100Grams" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="IngredientId" />
+          </Key>
+          <Property Name="IngredientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RecipeId" Type="int" Nullable="false" />
+          <Property Name="FoodId" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="PersonId" />
@@ -29,6 +46,15 @@
           <Property Name="PersonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Firstname" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Lastname" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recipe">
+          <Key>
+            <PropertyRef Name="RecipeId" />
+          </Key>
+          <Property Name="RecipeId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DateEntered" Type="date" Nullable="false" />
+          <Property Name="Archived" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Size">
           <Key>
@@ -73,6 +99,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Ingredient_To_Food">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="FoodId" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient_To_Recipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="RecipeId" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="RecipeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Size_To_Person">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="Size" Type="Self.Size" Multiplicity="*" />
@@ -100,7 +150,10 @@
         <EntityContainer Name="HomeUseTrackingModelStoreContainer">
           <EntitySet Name="CalorieCount" EntityType="Self.CalorieCount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalorieCountOffDay" EntityType="Self.CalorieCountOffDay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Food" EntityType="Self.Food" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Size" EntityType="Self.Size" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CalorieCount_To_Person" Association="Self.FK_CalorieCount_To_Person">
@@ -110,6 +163,14 @@
           <AssociationSet Name="FK_CalorieCountOffDay_To_Person" Association="Self.FK_CalorieCountOffDay_To_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="CalorieCountOffDay" EntitySet="CalorieCountOffDay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_To_Food" Association="Self.FK_Ingredient_To_Food">
+            <End Role="Food" EntitySet="Food" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_To_Recipe" Association="Self.FK_Ingredient_To_Recipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
           </AssociationSet>
           <AssociationSet Name="FK_Size_To_Person" Association="Self.FK_Size_To_Person">
             <End Role="Person" EntitySet="Person" />
@@ -181,6 +242,17 @@
             <End Role="Person" EntitySet="People" />
             <End Role="CalorieCountOffDay" EntitySet="CalorieCountOffDays" />
           </AssociationSet>
+          <EntitySet Name="Foods" EntityType="HomeUseTrackingModel.Food" />
+          <EntitySet Name="Ingredients" EntityType="HomeUseTrackingModel.Ingredient" />
+          <EntitySet Name="Recipes" EntityType="HomeUseTrackingModel.Recipe" />
+          <AssociationSet Name="FK_Ingredient_To_Food" Association="HomeUseTrackingModel.FK_Ingredient_To_Food">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="Ingredient" EntitySet="Ingredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_To_Recipe" Association="HomeUseTrackingModel.FK_Ingredient_To_Recipe">
+            <End Role="Recipe" EntitySet="Recipes" />
+            <End Role="Ingredient" EntitySet="Ingredients" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CalorieCount">
           <Key>
@@ -247,6 +319,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Food">
+          <Key>
+            <PropertyRef Name="FoodId" />
+          </Key>
+          <Property Name="FoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CaloriesPer100Grams" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ingredients" Relationship="HomeUseTrackingModel.FK_Ingredient_To_Food" FromRole="Food" ToRole="Ingredient" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="IngredientId" />
+          </Key>
+          <Property Name="IngredientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RecipeId" Type="Int32" Nullable="false" />
+          <Property Name="FoodId" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Food" Relationship="HomeUseTrackingModel.FK_Ingredient_To_Food" FromRole="Ingredient" ToRole="Food" />
+          <NavigationProperty Name="Recipe" Relationship="HomeUseTrackingModel.FK_Ingredient_To_Recipe" FromRole="Ingredient" ToRole="Recipe" />
+        </EntityType>
+        <EntityType Name="Recipe">
+          <Key>
+            <PropertyRef Name="RecipeId" />
+          </Key>
+          <Property Name="RecipeId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Ingredients" Relationship="HomeUseTrackingModel.FK_Ingredient_To_Recipe" FromRole="Recipe" ToRole="Ingredient" />
+        </EntityType>
+        <Association Name="FK_Ingredient_To_Food">
+          <End Type="HomeUseTrackingModel.Food" Role="Food" Multiplicity="1" />
+          <End Type="HomeUseTrackingModel.Ingredient" Role="Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="FoodId" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient_To_Recipe">
+          <End Type="HomeUseTrackingModel.Recipe" Role="Recipe" Multiplicity="1" />
+          <End Type="HomeUseTrackingModel.Ingredient" Role="Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="RecipeId" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="RecipeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -299,6 +425,35 @@
                 <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="CalorieCountOffDayId" ColumnName="CalorieCountOffDayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Food">
+              <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="CaloriesPer100Grams" ColumnName="CaloriesPer100Grams" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredient">
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
+                <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
+                <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recipes">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.Recipe">
+              <MappingFragment StoreEntitySet="Recipe">
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
