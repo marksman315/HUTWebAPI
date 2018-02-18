@@ -41,5 +41,37 @@ namespace HUTBusinessLayer.API
                 return false;
             }
         }
+
+        public bool Update(HUTModels.Ingredient model)
+        {
+            try
+            {
+                Ingredient ingredient = new Ingredient() { FoodId = model.FoodId, RecipeId = model.RecipeId, Weight = model.Weight, IngredientId = model.IngredientId };
+
+                repo.Update(ingredient);
+                repo.Save();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(int ingredientId)
+        {
+            try
+            {
+                repo.Delete<Ingredient>(ingredientId);
+                repo.Save();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

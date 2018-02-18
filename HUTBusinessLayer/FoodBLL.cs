@@ -56,5 +56,22 @@ namespace HUTBusinessLayer.API
                 return false;
             }
         }
+
+        public bool Update(HUTModels.Food model)
+        {
+            try
+            {
+                Food food = new Food() { CaloriesPer100Grams = model.CaloriesPer100Grams, Description = model.Description, FoodId = model.FoodId };
+
+                repo.Update(food);
+                repo.Save();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

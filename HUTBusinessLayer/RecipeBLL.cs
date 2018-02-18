@@ -80,5 +80,21 @@ namespace HUTBusinessLayer.API
                 return false;
             }
         }
+
+        public bool Delete(int recipeId)
+        {
+            try
+            {
+                //TODO: need to create method to pass a recipe and delete all the child ingredients at the same time
+                repo.Delete<Recipe>(recipeId);
+                repo.Save();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
