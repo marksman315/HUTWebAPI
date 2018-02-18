@@ -25,6 +25,45 @@ namespace HUTBusinessLayer.API
 
         #endregion
 
+        public List<HUTModels.Recipe> GetListOfRecipes()
+        {
+            List<HUTModels.Recipe> recipes = repo.GetAll<HUTDataAccessLayerSQL.Recipe>()
+                                                    .Select(r => new HUTModels.Recipe()
+                                                    {
+                                                        Archived = r.Archived,
+                                                        DateEntered = r.DateEntered,
+                                                        Description = r.Description,
+                                                        RecipeId = r.RecipeId
+                                                    })
+                                                    .OrderByDescending(y => y.Description)
+                                                    .OrderByDescending(x => x.DateEntered)
+                                                    .ToList();
+
+            return recipes;
+        }
+
+        public HUTModels.Recipe Get(int recipeId)
+        {
+            HUTDataAccessLayerSQL.Recipe recipe = repo.GetById<HUTDataAccessLayerSQL.Recipe>(recipeId);
+            HUTModels.Recipe model = new HUTModels.Recipe() {
+                                                                Archived = recipe.Archived,
+                                                                DateEntered = recipe.DateEntered,
+                                                                Description = recipe.Description,
+                                                                RecipeId = recipe.RecipeId,
+                                                                Ingredients = recipe.Ingredients.Select(x => new HUTModels.Ingredient()
+                                                                                                                {
+                                                                                                                    FoodId = x.FoodId,
+                                                                                                                    IngredientId = x.IngredientId,
+                                                                                                                    RecipeId = x.RecipeId,
+                                                                                                                    Weight = x.Weight
+                                                                                                                })
+                                                                                                                .OrderByDescending(y => y.Weight)
+                                                                                                                .ToList()
+            };
+
+            return model;
+        }
+
         public bool Insert(HUTModels.Recipe model)
         {
             try

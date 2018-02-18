@@ -25,6 +25,21 @@ namespace HUTBusinessLayer.API
 
         #endregion
 
+        public List<HUTModels.Food> GetListOfFoods()
+        {
+            List<HUTModels.Food> foods = repo.GetAll<HUTDataAccessLayerSQL.Food>()
+                                                .Select(f => new HUTModels.Food()
+                                                {
+                                                    CaloriesPer100Grams = f.CaloriesPer100Grams,
+                                                    Description = f.Description,
+                                                    FoodId = f.FoodId
+                                                })
+                                                .OrderBy(y => y.Description)
+                                                .ToList();
+
+            return foods;
+        }
+
         public bool Insert(HUTModels.Food model)
         {
             try
