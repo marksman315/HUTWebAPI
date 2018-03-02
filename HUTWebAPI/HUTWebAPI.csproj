@@ -202,6 +202,7 @@
     <Compile Include="Controllers\CalorieCountOffDayController.cs" />
     <Compile Include="Controllers\FoodController.cs" />
     <Compile Include="Controllers\IngredientController.cs" />
+    <Compile Include="Controllers\KeepAliveController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
