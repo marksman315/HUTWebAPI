@@ -27,6 +27,23 @@ namespace HUTWebAPI.Controllers
             }
         }
         
+        [HttpGet]
+        [Route("api/Food/GetUnlistedFood/{foodName}", Name = "GetUnlistedFood")]
+        public IHttpActionResult GetUnlistedFood(string foodName)
+        {            
+            FoodBLL bll = new FoodBLL();
+            var foods = bll.GetUnlistedFood(foodName);
+
+            if (foods == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Food not found in external resource.");
+            }
+            else
+            {
+                return Ok(foods);
+            }
+        }
+
         [HttpPost]
         public IHttpActionResult Post(HUTModels.Food model)
         {
