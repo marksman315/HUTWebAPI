@@ -61,7 +61,9 @@ namespace HUTBusinessLayer.API
 
             countsPerDay = AdjustForOffDays(personId, startDate, endDate, countsPerDay);
 
-            return countsPerDay;
+            List<HUTModels.CalorieCount> orderedCount = countsPerDay.OrderBy(x => x.DatetimeEntered).ToList();
+
+            return orderedCount;
         }
 
         public bool Insert(HUTModels.CalorieCount model)
@@ -145,6 +147,22 @@ namespace HUTBusinessLayer.API
                         }
                     }                    
                 }
+
+                // extra check needed because there may be more off days than on days which doesn't work with the above logic
+                foreach (var offDay in offDays)
+                {
+                    if (newCountsPerDay.Where(x => x.DatetimeEntered == offDay.DateEntered).Count() == 0)
+                    {
+                        newCountsPerDay.Add(new HUTModels.CalorieCount()
+                                                                {
+                                                                    CalorieCountId = 0,
+                                                                    Calories = 2000,
+                                                                    DatetimeEntered = offDay.DateEntered,
+                                                                    PersonId = personId
+                                                                });
+                    }
+                }
+
 
                 return newCountsPerDay;
             }
