@@ -35,7 +35,8 @@ namespace HUTBusinessLayer.API
                                                 {
                                                     CaloriesPer100Grams = f.CaloriesPer100Grams,
                                                     Description = f.Description,
-                                                    FoodId = f.FoodId
+                                                    FoodId = f.FoodId,
+                                                    PhotoURL = f.PhotoURL
                                                 })
                                                 .OrderBy(y => y.Description)
                                                 .ToList();
@@ -60,11 +61,25 @@ namespace HUTBusinessLayer.API
             return null;            
         }
 
+        public HUTModels.Food RetrieveAndUpdatePhotoURL(HUTModels.Food model)
+        {
+            HUTModels.Food food = GetFoodFromService(model.Description).Result;
+
+            // if a photo url is found, update our database with the value
+            if (!string.IsNullOrEmpty(food.PhotoURL))
+            {
+                model.PhotoURL = food.PhotoURL;
+                Update(model);
+            }
+
+            return model;
+        }
+
         public bool Insert(HUTModels.Food model)
         {
             try
             {
-                Food food = new Food() { CaloriesPer100Grams = model.CaloriesPer100Grams, Description = model.Description };
+                Food food = new Food() { CaloriesPer100Grams = model.CaloriesPer100Grams, Description = model.Description, PhotoURL = model.PhotoURL };
 
                 repo.Create(food);
                 repo.Save();
@@ -82,6 +97,12 @@ namespace HUTBusinessLayer.API
             try
             {
                 Food food = new Food() { CaloriesPer100Grams = model.CaloriesPer100Grams, Description = model.Description, FoodId = model.FoodId };
+
+                // checking separately so we don't accidentally delete the URL while doing some testing
+                if (model.PhotoURL != null)
+                {
+                    food.PhotoURL = model.PhotoURL;
+                }
 
                 repo.Update(food);
                 repo.Save();
@@ -108,10 +129,12 @@ namespace HUTBusinessLayer.API
 
             JArray foods =  (JArray)jsonObject["foods"];
             int calories = Convert.ToInt32(foods[0]["nf_calories"]);
+            string highres = (string)foods[0]["photo"]["highres"];
 
             HUTModels.Food food = new HUTModels.Food();
             food.CaloriesPer100Grams = Convert.ToInt32(calories);
-            food.Description = foodName;           
+            food.Description = foodName;
+            food.PhotoURL = highres;
 
             return food;
         }
@@ -123,7 +146,8 @@ namespace HUTBusinessLayer.API
                                                 {
                                                     CaloriesPer100Grams = f.CaloriesPer100Grams,
                                                     Description = f.Description,
-                                                    FoodId = f.FoodId
+                                                    FoodId = f.FoodId, 
+                                                    PhotoURL = f.PhotoURL
                                                 })
                                                 .Where(y => y.Description == foodName)
                                                 .OrderBy(y => y.Description)

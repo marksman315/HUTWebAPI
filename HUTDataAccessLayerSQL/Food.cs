@@ -23,6 +23,7 @@ namespace HUTDataAccessLayerSQL
         public int FoodId { get; set; }
         public string Description { get; set; }
         public int CaloriesPer100Grams { get; set; }
+        public string PhotoURL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ingredient> Ingredients { get; set; }

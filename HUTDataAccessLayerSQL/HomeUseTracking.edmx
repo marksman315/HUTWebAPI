@@ -29,6 +29,7 @@
           <Property Name="FoodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="CaloriesPer100Grams" Type="int" Nullable="false" />
+          <Property Name="PhotoURL" Type="varchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -327,6 +328,7 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CaloriesPer100Grams" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Ingredients" Relationship="HomeUseTrackingModel.FK_Ingredient_To_Food" FromRole="Food" ToRole="Ingredient" />
+          <Property Name="PhotoURL" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Ingredient">
           <Key>
@@ -431,6 +433,7 @@
           <EntitySetMapping Name="Foods">
             <EntityTypeMapping TypeName="HomeUseTrackingModel.Food">
               <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="PhotoURL" ColumnName="PhotoURL" />
                 <ScalarProperty Name="CaloriesPer100Grams" ColumnName="CaloriesPer100Grams" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="FoodId" ColumnName="FoodId" />

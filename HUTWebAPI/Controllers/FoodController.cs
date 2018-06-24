@@ -58,6 +58,23 @@ namespace HUTWebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("api/Food/RetrieveAndUpdatePhotoURL", Name = "RetrieveAndUpdatePhotoURL")]
+        public IHttpActionResult RetrieveAndUpdatePhotoURL(HUTModels.Food model)
+        {
+            FoodBLL bll = new FoodBLL();
+            var food = bll.RetrieveAndUpdatePhotoURL(model);
+
+            if (food == null)
+            {
+                return Content(HttpStatusCode.NotFound, "Food or Photo URL not found in external resource.");
+            }
+            else
+            {
+                return Ok(food);
+            }
+        }
+
         [HttpPut]
         public IHttpActionResult Put(HUTModels.Food model)
         {
