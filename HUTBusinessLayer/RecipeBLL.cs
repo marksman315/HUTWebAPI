@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HUTDataAccessLayerSQL;
 
 namespace HUTBusinessLayer.API
@@ -42,7 +40,7 @@ namespace HUTBusinessLayer.API
             return recipes;
         }
 
-        public HUTModels.Recipe Get(int recipeId)
+        public HUTModels.Recipe GetRecipeWithIngredients(int recipeId)
         {
             HUTDataAccessLayerSQL.Recipe recipe = repo.GetById<HUTDataAccessLayerSQL.Recipe>(recipeId);
             HUTModels.Recipe model = new HUTModels.Recipe() {
@@ -73,6 +71,37 @@ namespace HUTBusinessLayer.API
                 repo.Create(recipe);
                 repo.Save();
 
+                if (model.Ingredients?.Count > 0)
+                {
+                    int? recipeId = GetIdByDescriptionAndDateEntered(model.Description, model.DateEntered);
+
+                    if (recipeId != null)
+                    {
+                        IngredientBLL bll = new IngredientBLL(this.repo);
+
+                        foreach (HUTModels.Ingredient ingredient in model.Ingredients)
+                        {
+                            ingredient.RecipeId = (int)recipeId;
+                            bll.Insert(ingredient);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Update(HUTModels.Recipe model)
+        {
+            try
+            {
+                repo.Update(model);
+                repo.Save();
+
                 return true;
             }
             catch (Exception)
@@ -85,7 +114,17 @@ namespace HUTBusinessLayer.API
         {
             try
             {
-                //TODO: need to create method to pass a recipe and delete all the child ingredients at the same time
+                // delete all the child ingredients first by getting them and looping to delete them all (not very efficient)
+                // there needs to be a better way to do this en masse
+                HUTModels.Recipe recipe = GetRecipeWithIngredients(recipeId);
+
+                IngredientBLL bll = new IngredientBLL(this.repo);
+
+                foreach (HUTModels.Ingredient ingredient in recipe.Ingredients)
+                {
+                    bll.Delete(ingredient.IngredientId);
+                }
+
                 repo.Delete<Recipe>(recipeId);
                 repo.Save();
 
@@ -95,6 +134,13 @@ namespace HUTBusinessLayer.API
             {
                 return false;
             }
+        }
+
+        private int? GetIdByDescriptionAndDateEntered(string description, DateTime dateEntered)
+        {
+            int? recipeId = repo.GetOne<HUTDataAccessLayerSQL.Recipe>(x => x.Description == description && x.DateEntered == dateEntered).RecipeId;
+                                                    
+            return recipeId;
         }
     }
 }
