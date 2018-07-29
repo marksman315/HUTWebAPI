@@ -40,24 +40,39 @@ namespace HUTBusinessLayer.API
             return recipes;
         }
 
+        public List<HUTModels.Recipe> GetListOfActiveRecipes()
+        {
+            List<HUTModels.Recipe> recipes = repo.GetAll<HUTDataAccessLayerSQL.Recipe>()
+                                                    .Select(r => new HUTModels.Recipe()
+                                                    {
+                                                        Archived = r.Archived,
+                                                        DateEntered = r.DateEntered,
+                                                        Description = r.Description,
+                                                        RecipeId = r.RecipeId
+                                                    })
+                                                    .Where(z => z.Archived == false)
+                                                    .OrderByDescending(y => y.Description)
+                                                    .OrderByDescending(x => x.DateEntered)
+                                                    .ToList();
+
+            return recipes;
+        }
+
         public HUTModels.Recipe GetRecipeWithIngredients(int recipeId)
         {
+            IngredientBLL ingredientBLL = new IngredientBLL(this.repo);
+            
+            // must be done in two steps due to not using the context directly
+            // getting the related data does not work with this repo
             HUTDataAccessLayerSQL.Recipe recipe = repo.GetById<HUTDataAccessLayerSQL.Recipe>(recipeId);
-            HUTModels.Recipe model = new HUTModels.Recipe() {
-                                                                Archived = recipe.Archived,
-                                                                DateEntered = recipe.DateEntered,
-                                                                Description = recipe.Description,
-                                                                RecipeId = recipe.RecipeId,
-                                                                Ingredients = recipe.Ingredients.Select(x => new HUTModels.Ingredient()
-                                                                                                                {
-                                                                                                                    FoodId = x.FoodId,
-                                                                                                                    IngredientId = x.IngredientId,
-                                                                                                                    RecipeId = x.RecipeId,
-                                                                                                                    Weight = x.Weight
-                                                                                                                })
-                                                                                                                .OrderByDescending(y => y.Weight)
-                                                                                                                .ToList()
-            };
+            HUTModels.Recipe model = new HUTModels.Recipe()
+                                        {
+                                            Archived = recipe.Archived,
+                                            DateEntered = recipe.DateEntered,
+                                            Description = recipe.Description,
+                                            RecipeId = recipe.RecipeId,
+                                            Ingredients = ingredientBLL.GetPerRecipe(recipeId)
+                                        };
 
             return model;
         }

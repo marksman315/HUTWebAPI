@@ -14,7 +14,7 @@ namespace HUTWebAPI.Controllers
         public IHttpActionResult GetActiveRecipes()
         {
             RecipeBLL bll = new RecipeBLL();
-            var recipes = bll.GetListOfRecipes();
+            var recipes = bll.GetListOfActiveRecipes();
 
             if (recipes == null)
             {

@@ -25,6 +25,23 @@ namespace HUTBusinessLayer.API
 
         #endregion
 
+        public List<HUTModels.Ingredient> GetPerRecipe(int recipeId)
+        {
+            List<HUTModels.Ingredient> ingredients = repo.Get<HUTDataAccessLayerSQL.Ingredient>()
+                                                    .Select(x => new HUTModels.Ingredient()
+                                                    {
+                                                        FoodId = x.FoodId,
+                                                        IngredientId = x.IngredientId,
+                                                        RecipeId = x.RecipeId,
+                                                        Weight = x.Weight
+                                                    })
+                                                    .Where(y => y.RecipeId == recipeId)
+                                                    .OrderByDescending(z => z.Weight)
+                                                    .ToList();
+                                                    
+            return ingredients;
+        }
+
         public bool Insert(HUTModels.Ingredient model)
         {
             try
