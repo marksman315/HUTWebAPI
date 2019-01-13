@@ -19,6 +19,7 @@
         <EntityTypeShape EntityType="HomeUseTrackingModel.Recipe" Width="1.5" PointX="11.375" PointY="2.125" />
         <AssociationConnector Association="HomeUseTrackingModel.FK_Ingredient_To_Food" />
         <AssociationConnector Association="HomeUseTrackingModel.FK_Ingredient_To_Recipe" />
+        <EntityTypeShape EntityType="HomeUseTrackingModel.FreezerInventory" Width="1.875" PointX="4.625" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

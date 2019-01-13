@@ -53,6 +53,7 @@
     <Compile Include="CalorieCountBLL.cs" />
     <Compile Include="CalorieCountOffDayBLL.cs" />
     <Compile Include="FoodBLL.cs" />
+    <Compile Include="FreezerInventoryBLL.cs" />
     <Compile Include="Helpers\HTTPHelper.cs" />
     <Compile Include="IngredientBLL.cs" />
     <Compile Include="PersonBLL.cs" />

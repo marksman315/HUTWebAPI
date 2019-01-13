@@ -43,6 +43,7 @@
     <Compile Include="CalorieCount.cs" />
     <Compile Include="CalorieCountOffDay.cs" />
     <Compile Include="Food.cs" />
+    <Compile Include="FreezerInventory.cs" />
     <Compile Include="Ingredient.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

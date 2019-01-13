@@ -58,6 +58,9 @@
     <Compile Include="Food.cs">
       <DependentUpon>HomeUseTracking.tt</DependentUpon>
     </Compile>
+    <Compile Include="FreezerInventory.cs">
+      <DependentUpon>HomeUseTracking.tt</DependentUpon>
+    </Compile>
     <Compile Include="HomeUseTracking.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

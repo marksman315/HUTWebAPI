@@ -31,6 +31,14 @@
           <Property Name="CaloriesPer100Grams" Type="int" Nullable="false" />
           <Property Name="PhotoURL" Type="varchar" MaxLength="2000" />
         </EntityType>
+        <EntityType Name="FreezerInventory">
+          <Key>
+            <PropertyRef Name="FreezerInventoryId" />
+          </Key>
+          <Property Name="FreezerInventoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
         <EntityType Name="Ingredient">
           <Key>
             <PropertyRef Name="IngredientId" />
@@ -52,7 +60,7 @@
           <Key>
             <PropertyRef Name="RecipeId" />
           </Key>
-          <Property Name="RecipeId" Type="int" Nullable="false" />
+          <Property Name="RecipeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="DateEntered" Type="date" Nullable="false" />
           <Property Name="Archived" Type="bit" Nullable="false" />
@@ -152,6 +160,7 @@
           <EntitySet Name="CalorieCount" EntityType="Self.CalorieCount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalorieCountOffDay" EntityType="Self.CalorieCountOffDay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Food" EntityType="Self.Food" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FreezerInventory" EntityType="Self.FreezerInventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
@@ -254,6 +263,7 @@
             <End Role="Recipe" EntitySet="Recipes" />
             <End Role="Ingredient" EntitySet="Ingredients" />
           </AssociationSet>
+          <EntitySet Name="FreezerInventories" EntityType="HomeUseTrackingModel.FreezerInventory" />
         </EntityContainer>
         <EntityType Name="CalorieCount">
           <Key>
@@ -375,6 +385,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FreezerInventory">
+          <Key>
+            <PropertyRef Name="FreezerInventoryId" />
+          </Key>
+          <Property Name="FreezerInventoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -457,6 +475,15 @@
                 <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RecipeId" ColumnName="RecipeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FreezerInventories">
+            <EntityTypeMapping TypeName="HomeUseTrackingModel.FreezerInventory">
+              <MappingFragment StoreEntitySet="FreezerInventory">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="FreezerInventoryId" ColumnName="FreezerInventoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

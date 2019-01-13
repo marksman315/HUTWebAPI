@@ -34,5 +34,6 @@ namespace HUTDataAccessLayerSQL
         public virtual DbSet<Food> Foods { get; set; }
         public virtual DbSet<Ingredient> Ingredients { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
+        public virtual DbSet<FreezerInventory> FreezerInventories { get; set; }
     }
 }
